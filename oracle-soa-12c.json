@@ -1,0 +1,63 @@
+{
+  "variables": {
+    "java_rpm": "jdk-7u80-linux-x64.rpm",
+    "soa_zip": "fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip",
+    "soa_pkg": "fmw_12.1.3.0.0_soa_quickstart.jar",
+    "soa_pkg2": "fmw_12.1.3.0.0_soa_quickstart2.jar"
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "oraclelinux:7.1",
+      "commit": "true",
+      "volumes": {
+        "{{pwd}}/installers": "/data"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/create-user.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./files/",
+      "destination": "/u01/"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/install-java.sh"
+      ],
+      "environment_vars": [
+        "JAVA_RPM=/data/{{user `java_rpm`}}"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/install-soa.sh"
+      ],
+      "environment_vars": [
+        "SOA_ZIP=/data/{{user `soa_zip`}}",
+        "SOA_PKG={{user `soa_pkg`}}",
+        "SOA_PKG2={{user `soa_pkg2`}}",
+        "JAVA_HOME=/usr/java/default",
+        "MW_HOME=/u01/oracle/soa"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "jeqo/oracle-soa-12c",
+        "tag": "12.1.3-dev"
+      },
+      "docker-push"
+    ]
+  ]
+}
