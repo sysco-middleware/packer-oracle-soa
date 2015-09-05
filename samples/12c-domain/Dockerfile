@@ -2,7 +2,7 @@
 # -----------------------
 # Put all downloaded files in the same directory as this Dockerfile
 # Run:
-#      $ sudo docker build -t mysoa .
+#      $ docker build -t soa_host .
 #
 
 # Pull base image
