@@ -21,3 +21,5 @@ To create a domain you could check "samples" directory. It contains
 a *Dockerfile* with steps to run "container-scripts/create-soa-domain.py" WLST script.
 
 You could create your own domain creation script and run Dockerfile.
+
+[Samples](https://github.com/jeqo/oracle-soa-12c-docker/tree/master/samples/12c-domain)
