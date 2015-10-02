@@ -11,15 +11,8 @@
     "atlas_token": "Wxup5lmGRBiw5w.atlasv1.acP4mLQyOWMR1wxucw9bxcz1r4pSlpuVGqTAVWyvLoPJXpBkaIAJN1Tfey9z5maMryE"
   },
   "builders": [{
-    "type": "docker",
-    "image": "oraclelinux:6.7",
-    "commit": "true",
-    "volumes": {
-      "{{pwd}}/installers": "/data"
-    }
-  },{
-    "type": "virtualbox-ovf",
     "vm_name": "{{user `vm_name`}}",
+    "type": "virtualbox-ovf",
     "output_directory": "build/{{user `vm_name`}}",
     "source_path": "build/{{user `base_vm_name`}}/{{user `base_vm_name`}}.ovf",
 
@@ -83,23 +76,13 @@
     ]
   }],
   "post-processors": [
-    [
-      {
-        "type": "docker-tag",
-        "only": ["docker"],
-        "repository": "jeqo/oracle-soa-12c",
-        "tag": "12.1.3-dev"
-      },
-      "docker-push"
-    ], [{
-      "type": "vagrant",
-      "only": ["virtualbox-ovf"],
+    [{
       "output": "build/{{user `vm_name`}}/{{user `vm_name`}}.box",
+      "type": "vagrant",
       "compression_level": 9,
       "keep_input_artifact": true
     }, {
       "type": "atlas",
-      "only": ["virtualbox-ovf"],
       "token": "{{user `atlas_token`}}",
       "artifact": "norgesgruppen/oracle-soa_qs-12c",
       "artifact_type": "vagrant.box",
