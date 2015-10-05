@@ -1,23 +1,30 @@
 {
   "variables": {
     "base_vm_name": "oracle-linux-6",
-    "harddisk_size": "50960",
     "vm_name": "oracle-soa_qs-12c",
-    "oracle_user": "oraclefmw",
+    "version": "12.1.3-{{isotime \"2006-01-02\"}}",
+
+    "java_install_dir": "/data/oracle-java",
     "java_rpm": "jdk-7u80-linux-x64.rpm",
     "java_home": "/usr/java/jdk1.7.0_80",
+
+    "oracle_user": "oraclefmw",
+
+    "soa_install_dir": "/data/oracle-fmw",
     "soa_zip": "fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip",
     "soa_pkg": "fmw_12.1.3.0.0_soa_quickstart.jar",
-    "soa_pkg2": "fmw_12.1.3.0.0_soa_quickstart2.jar",
-    "atlas_token": "Wxup5lmGRBiw5w.atlasv1.acP4mLQyOWMR1wxucw9bxcz1r4pSlpuVGqTAVWyvLoPJXpBkaIAJN1Tfey9z5maMryE"
+    "soa_pkg2": "fmw_12.1.3.0.0_soa_quickstart2.jar"
   },
+
   "builders": [{
     "type": "docker",
     "image": "oraclelinux:6.7",
-    "commit": "true",
+
     "volumes": {
-      "{{pwd}}/installers": "/data"
-    }
+      "{{pwd}}/data": "/data"
+    },
+
+    "commit": "true"
   },{
     "type": "virtualbox-ovf",
     "vm_name": "{{user `vm_name`}}",
@@ -34,23 +41,33 @@
 
     "shutdown_command": "echo 'vagrant'|sudo -S /sbin/halt -h -p"
   }],
+
   "provisioners": [{
     "type": "shell",
-    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "only": ["virtualbox-ovf"],
-    "inline": ["mkdir /data"]
+    "inline": "mkdir /data && chown -R 777 /data",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+  },
+
+  {
+    "type": "file",
+    "only": ["virtualbox-ovf"],
+    "source": "{{pwd}}{{user `java_install_dir`}}/{{user `java_rpm`}}",
+    "destination": "/tmp/{{user `java_rpm`}}"
   }, {
-      "type": "file",
-      "only": ["virtualbox-ovf"],
-      "source": "{{pwd}}/installers/oracle-java/{{user `java_rpm`}}",
-      "destination": "/data/oracle-java/{{user `java_rpm`}}"
-  }, {
+    "type": "shell",
+    "only": ["virtualbox-ovf"],
+    "inline": "mkdir {{user `java_install_dir`}} && mv /tmp/{{user `java_rpm`}} {{user `java_install_dir`}}/.",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+  },
+
+  {
     "type": "shell",
     "scripts": [
       "scripts/oracle-java/install-jdk-rpm.sh"
     ],
     "environment_vars": [
-      "JAVA_RPM=/data/oracle-java/{{user `java_rpm`}}",
+      "JAVA_RPM={{user `java_install_dir`}}/{{user `java_rpm`}}",
       "JAVA_HOME={{user `java_home`}}"
     ],
     "override": {
@@ -72,12 +89,21 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
       }
     }
-  }, {
+  },
+
+  {
     "type": "file",
     "only": ["virtualbox-ovf"],
-    "source": "{{pwd}}/installers/oracle-fmw/{{user `soa_zip`}}",
-    "destination": "/data/oracle-fmw/{{user `soa_zip`}}"
+    "source": "{{pwd}}{{user `soa_install_dir`}}/{{user `soa_zip`}}",
+    "destination": "/tmp/{{user `soa_zip`}}"
   }, {
+    "type": "shell",
+    "only": ["virtualbox-ovf"],
+    "inline": "mkdir {{user `soa_install_dir`}} && mv /tmp/{{user `soa_zip`}} {{user `soa_install_dir`}}/.",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+  },
+
+  {
     "type": "shell",
     "scripts": [
       "scripts/oracle-fmw/install-soa_qs-12c.sh"
@@ -86,6 +112,7 @@
       "JAVA_HOME={{user `java_home`}}",
       "OS_GROUP=oinstall",
       "OS_USER={{user `oracle_user`}}",
+      "SOA_INSTALL_DIR={{user `soa_install_dir`}}",
       "SOA_ZIP={{user `soa_zip`}}",
       "SOA_PKG={{user `soa_pkg`}}",
       "SOA_PKG2={{user `soa_pkg2`}}",
@@ -96,7 +123,9 @@
         "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
       }
     }
-  }, {
+  },
+
+  {
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "only": ["virtualbox-ovf"],
@@ -109,27 +138,39 @@
     ],
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
   }],
+
   "post-processors": [
     [{
       "type": "docker-tag",
       "only": ["docker"],
-      "repository": "jeqo/oracle-soa-12c",
-      "tag": "12.1.3-20151003"
+      "repository": "{{user `user`}}/oracle-soa-12c",
+      "tag": "{{user `version`}}",
+      "force": true
     }, {
       "type": "docker-push",
       "only": ["docker"]
+    }],
+
+
+    [{
+      "type": "docker-import",
+      "only": ["docker"],
+      "repository": "{{user `user`}}/oracle-soa-12c",
+      "tag": "{{user `version`}}"
     }, {
       "type": "atlas",
       "only": ["docker"],
       "token": "{{user `atlas_token`}}",
-      "artifact": "jeqo/oracle-soa-12c",
+      "artifact": "{{user `user`}}/oracle-soa-12c",
       "artifact_type": "docker.image",
       "metadata": {
         "created_at": "{{timestamp}}",
         "provider": "docker",
-        "version": "12.1.3-20151005"
+        "version": "{{user `version`}}"
       }
-    }], [{
+    }],
+
+    [{
       "type": "vagrant",
       "only": ["virtualbox-ovf"],
       "output": "build/{{user `vm_name`}}/{{user `vm_name`}}.box",
@@ -139,12 +180,12 @@
       "type": "atlas",
       "only": ["virtualbox-ovf"],
       "token": "{{user `atlas_token`}}",
-      "artifact": "jeqo/oracle-soa-12c",
+      "artifact": "{{user `user`}}/oracle-soa-12c",
       "artifact_type": "vagrant.box",
       "metadata": {
         "created_at": "{{timestamp}}",
         "provider": "virtualbox",
-        "version": "12.1.3-20151005"
+        "version": "{{user `version`}}"
       }
     }]
   ]

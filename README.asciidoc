@@ -1,0 +1,39 @@
+= Oracle SOA Suite 12c - Packer Builder
+
+Packer project to build *Oracle SOA Suite 12c* (Quickstart)
+images on the following providers:
+
+* VirtualBox
+* Docker
+
+This images contains the following properties:
+
+* Provisioning user/password: vagrant/vagrant
+
+* JDK installed: JDK 7 update 80
+
+* Java Home: /usr/java/jdk1.7.0_80
+
+* Oracle user/password: oraclefmw/welcome1
+
+* Oracle Home: /home/oraclefmw/product/Oracle_Home
+
+* Oracle SOA Suite 12c release: 12.1.3.0.0
+
+== How to build it
+
+Validate installers are donwloaded and saved on "data" directory.
+
+NOTE: If you want to use a specific provider (docker or virtualbox-ovf) you
+have to add "-only={provider}" variable.
+
+NOTE: If you want to build "virtualbox-ovf" image, you have to build
+"oracle-linux-6" image first. Validate that ISO file is saved on "iso" directory.
+
+Run:
+
+packer build [-only={provider}] -var 'atlas_token={atlas_token}' -var 'user={user}' oracle-soa-12c.json
+
+== How to use it
+
+Go to samples directory (TODO)
