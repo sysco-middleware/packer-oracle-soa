@@ -1,0 +1,5 @@
+== http directory
+
+This directory contains Kickstart files used by VirtualBox ISO builders.
+
+* OEL6_7-x86_64: Oracle Linux 6 update 7

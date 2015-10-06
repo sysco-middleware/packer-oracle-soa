@@ -1,0 +1,4 @@
+== iso directory
+
+It contains ISO files from Operating Systems used by Packer VirtualBox
+ISO distribution.

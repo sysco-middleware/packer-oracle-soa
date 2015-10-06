@@ -1,0 +1,27 @@
+== scripts directory
+
+It contains Shell scripts used by Packer provisioning.
+
+=== common
+
+* cleanup.sh: Remove unused packages and installers.
+
+* minimize.sh: Clean temporal directories to reduce image size.
+
+* networking.sh: Configure network access on VirtualBox VM.
+
+* sshd.sh: Configure SSH local access.
+
+* vagrant.sh: Creates vagrant user.
+
+* vmtools.sh: Install and configure VM provider tools.
+
+=== oracle-fmw
+
+* create-oracle-user.sh: Creates and configure user to install FMW products.
+
+* install-soa_qs-12c.sh: Installs Oracle SOA Suite 12c Quickstart distribution.
+
+=== oracle-java
+
+* install-jdk-rpm.sh: Install Oracle Java JDK RPM distribution.
