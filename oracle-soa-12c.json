@@ -2,7 +2,7 @@
   "variables": {
     "base_vm_name": "oracle-linux-6",
     "vm_name": "oracle-soa_qs-12c",
-    "version": "12.1.3-{{isotime \"2006-01-02\"}}",
+    "version": "12.1.3-{{isotime \"20060102\"}}",
 
     "java_install_dir": "/data/oracle-java",
     "java_rpm": "jdk-7u80-linux-x64.rpm",
@@ -149,25 +149,6 @@
     }, {
       "type": "docker-push",
       "only": ["docker"]
-    }],
-
-
-    [{
-      "type": "docker-import",
-      "only": ["docker"],
-      "repository": "{{user `user`}}/oracle-soa-12c",
-      "tag": "{{user `version`}}"
-    }, {
-      "type": "atlas",
-      "only": ["docker"],
-      "token": "{{user `atlas_token`}}",
-      "artifact": "{{user `user`}}/oracle-soa-12c",
-      "artifact_type": "docker.image",
-      "metadata": {
-        "created_at": "{{timestamp}}",
-        "provider": "docker",
-        "version": "{{user `version`}}"
-      }
     }],
 
     [{
