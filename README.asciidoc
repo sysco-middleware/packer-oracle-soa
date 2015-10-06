@@ -3,8 +3,8 @@
 Packer project to build *Oracle SOA Suite 12c* (Quickstart)
 images on the following providers:
 
-* VirtualBox
-* Docker
+* VirtualBox: https://atlas.hashicorp.com/jeqo/boxes/oracle-soa-12c
+* Docker: https://hub.docker.com/r/jeqo/oracle-soa-12c
 
 This images contains the following properties:
 
