@@ -2,18 +2,22 @@
   "variables": {
     "base_vm_name": "oracle-linux-6",
     "vm_name": "oracle-soa_qs-12c",
-    "version": "12.1.3-{{isotime \"20060102\"}}",
+    "version": "12.2.1.{{isotime \"20060102150405\"}}",
 
-    "java_install_dir": "/data/oracle-java",
-    "java_rpm": "jdk-7u80-linux-x64.rpm",
-    "java_home": "/usr/java/jdk1.7.0_80",
+    "jdk_version": "8u66",
+    "jdk_build": "b17",
+    "java_home": "/usr/java/jdk1.8.0_66",
 
     "oracle_user": "oraclefmw",
 
     "soa_install_dir": "/data/oracle-fmw",
-    "soa_zip": "fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip",
-    "soa_pkg": "fmw_12.1.3.0.0_soa_quickstart.jar",
-    "soa_pkg2": "fmw_12.1.3.0.0_soa_quickstart2.jar"
+    "soa_zip": "fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip",
+    "soa_zip2": "fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip",
+    "soa_pkg": "fmw_12.2.1.0.0_soa_quickstart.jar",
+    "soa_pkg2": "fmw_12.2.1.0.0_soa_quickstart2.jar",
+
+    "user": "jeqo",
+    "atlas_token": ""
   },
 
   "builders": [{
@@ -50,24 +54,13 @@
   },
 
   {
-    "type": "file",
-    "only": ["virtualbox-ovf"],
-    "source": "{{pwd}}{{user `java_install_dir`}}/{{user `java_rpm`}}",
-    "destination": "/tmp/{{user `java_rpm`}}"
-  }, {
-    "type": "shell",
-    "only": ["virtualbox-ovf"],
-    "inline": "mkdir {{user `java_install_dir`}} && mv /tmp/{{user `java_rpm`}} {{user `java_install_dir`}}/.",
-    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
-  },
-
-  {
     "type": "shell",
     "scripts": [
       "scripts/oracle-java/install-jdk-rpm.sh"
     ],
     "environment_vars": [
-      "JAVA_RPM={{user `java_install_dir`}}/{{user `java_rpm`}}",
+      "JDK_VERSION={{user `jdk_version`}}",
+      "JDK_BUILD={{user `jdk_build`}}",
       "JAVA_HOME={{user `java_home`}}"
     ],
     "override": {
@@ -97,9 +90,14 @@
     "source": "{{pwd}}{{user `soa_install_dir`}}/{{user `soa_zip`}}",
     "destination": "/tmp/{{user `soa_zip`}}"
   }, {
+    "type": "file",
+    "only": ["virtualbox-ovf"],
+    "source": "{{pwd}}{{user `soa_install_dir`}}/{{user `soa_zip2`}}",
+    "destination": "/tmp/{{user `soa_zip2`}}"
+  }, {
     "type": "shell",
     "only": ["virtualbox-ovf"],
-    "inline": "mkdir {{user `soa_install_dir`}} && mv /tmp/{{user `soa_zip`}} {{user `soa_install_dir`}}/.",
+    "inline": "mkdir {{user `soa_install_dir`}} && mv /tmp/{{user `soa_zip`}} {{user `soa_install_dir`}}/. && mv /tmp/{{user `soa_zip2`}} {{user `soa_install_dir`}}/.",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
   },
 
@@ -114,6 +112,7 @@
       "OS_USER={{user `oracle_user`}}",
       "SOA_INSTALL_DIR={{user `soa_install_dir`}}",
       "SOA_ZIP={{user `soa_zip`}}",
+      "SOA_ZIP2={{user `soa_zip2`}}",
       "SOA_PKG={{user `soa_pkg`}}",
       "SOA_PKG2={{user `soa_pkg2`}}",
       "ORACLE_HOME=/home/{{user `oracle_user`}}/product/Oracle_Home"

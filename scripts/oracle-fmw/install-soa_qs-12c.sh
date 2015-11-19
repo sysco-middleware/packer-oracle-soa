@@ -21,6 +21,7 @@ EOF
 
 cd $SOA_INSTALL_DIR
 jar xf $SOA_ZIP
+jar xf $SOA_ZIP2
 su $OS_USER -c "java -jar $SOA_PKG -ignoreSysPrereqs -novalidation -silent -responseFile /tmp/install.file -invPtrLoc /tmp/oraInst.loc -jreLoc $JAVA_HOME"
 
 
