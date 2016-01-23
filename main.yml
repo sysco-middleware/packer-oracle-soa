@@ -1,0 +1,70 @@
+- name: packer-oracle-soa assistant
+  hosts: 127.0.0.1
+
+  vars_prompt:
+    - name: "providers"
+      prompt: "providers? (virtualbox,docker,aws)"
+      default:
+      private: no
+    - name: "debug"
+      prompt: "debug? (true or false)"
+      default: no
+      private: no
+    - name: "os"
+      prompt: "os? (ol7 or centos7)"
+      default: "centos7"
+      private: no
+    - name: "quick"
+      prompt: "quick installer? (true or false)"
+      default: "true"
+      private: no
+    - name: "bpm"
+      prompt: "install bpm? (true or false)"
+      default: "false"
+      private: no
+
+  tasks:
+    - set_fact:
+        only_providers: -only={{ providers }}
+      when: providers is defined and providers != ""
+
+    - set_fact:
+        debug_text: "-debug=true"
+      when: debug | bool
+
+    - set_fact:
+        debug_text: "-debug=false"
+      when: not debug | bool
+
+    - set_fact:
+        variables: oracle-soa-12c-{{ os }}.json
+        installers:
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soa_Disk1_1of1.zip"
+      when: not quick
+
+    - set_fact:
+        variables: oracle-soa-qs-12c-{{ os }}.json
+        installers:
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip"
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip"
+      when: quick | bool and not bpm | bool
+
+    - set_fact:
+        variables: oracle-bpm-qs-12c-{{ os }}.json
+        installers:
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip"
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip"
+      when: quick | bool and bpm | bool
+
+    - debug:
+        msg: "{{ variables }} template will be built"
+
+    - shell: "ansible-galaxy install -f -p ./roles -r roles.yml"
+
+    - copy:
+        src: "{{ item }}"
+        dest: roles/oracle-soa/files/
+        force: no
+      with_items: "{{ installers }}"
+
+    - shell: "packer build -var-file={{ variables }} -force=true {{ debug_text }} {{ only_providers }} oracle-soa.json >> build.log"

@@ -1,0 +1,14 @@
+---
+# defaults file for oracle-soa
+oracle_soa_version: 12c
+oracle_soa_release: 12.2.1
+oracle_soa_quick_installation: yes
+oracle_soa_install_bpm: yes
+
+oracle_soa_installers_12_2_1_1of1: files/fmw_12.2.1.0.0_soa_Disk1_1of2.zip
+
+oracle_soaqs_installers_12_2_1_1of2: files/fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip
+oracle_soaqs_installers_12_2_1_2of2: files/fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip
+
+oracle_bpmqs_installers_12_2_1_1of2: files/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip
+oracle_bpmqs_installers_12_2_1_2of2: files/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip

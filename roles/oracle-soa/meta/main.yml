@@ -1,0 +1,29 @@
+galaxy_info:
+  author: jeqo (quilcate.jorge@gmail.com)
+  description: install and configure oracle soa suite
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+
+  categories:
+  - web
+
+  galaxy_tags:
+  - install
+  - middleware
+  - soa
+  - oracle
+dependencies:
+  -
+    role: jeqo.java
+    java_provider: oracle
+    java_version: 8
+    java_type: jdk

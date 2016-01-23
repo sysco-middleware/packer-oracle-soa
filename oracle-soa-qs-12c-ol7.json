@@ -1,0 +1,14 @@
+{
+  "name": "oracle-soa-qs-12c",
+  "os": "ol7",
+
+  "image_name": "oracle-soa-qs-12c-ol7",
+  "base_image_name": "oracle-jdk-8-ol7",
+
+  "docker_user": "jeqo",
+  "atlas_user": "jeqo",
+
+  "version": "12.2.1",
+
+  "tags": "install"
+}

@@ -1,0 +1,167 @@
+{
+  "description": "oracle soa packer template",
+  "_comment": "before running this template, use: pre-build script and download required installers files.",
+
+  "variables": {
+    "name": "",
+    "os": "",
+
+    "image_name": "",
+    "base_image_name": "",
+
+    "user_home": "{{env `HOME`}}",
+
+    "docker_user": "",
+
+    "atlas_user": "",
+    "atlas_token": "{{env `ATLAS_TOKEN`}}",
+
+    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `ÀWS_SECRET_KEY`}}",
+    "aws_source_ami": "",
+
+    "version": "",
+    "timestamp": "{{isotime \"20060102150405\"}}",
+
+    "tags": ""
+  },
+
+  "builders": [{
+    "name": "virtualbox",
+    "type": "virtualbox-ovf",
+
+    "vm_name": "{{user `image_name`}}",
+    "output_directory": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `image_name`}}",
+    "source_path": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `base_image_name`}}/{{user `base_image_name`}}.ovf",
+
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "2048"],
+      ["modifyvm", "{{.Name}}", "--cpus", "1"]
+    ],
+
+    "headless": false,
+    "boot_wait": "12s",
+
+    "shutdown_command": "echo 'vagrant'|sudo -S /sbin/halt -h -p"
+  },{
+    "type": "docker",
+
+    "image": "{{user `docker_user`}}/{{user `base_image_name`}}",
+    "commit": "true"
+  },{
+    "name": "aws",
+    "type": "amazon-ebs",
+
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+
+    "region": "us-east-1",
+    "source_ami": "{{user `aws_source_ami`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "centos",
+    "ami_name": "{{user `image_name`}} {{timestamp}}",
+
+    "ssh_pty" : true
+  }],
+
+  "provisioners": [{
+    "type": "ansible-local",
+    "playbook_file": "{{user `name`}}.yml",
+    "role_paths": [
+      "{{template_dir}}/roles/oracle-soa",
+      "{{template_dir}}/roles/jeqo.java"
+    ],
+    "override": {
+      "virtualbox": {
+        "extra_arguments": "-s -u vagrant --tags '{{user `tags`}}'"
+      },
+      "docker": {
+        "extra_arguments": "--tags '{{user `tags`}}'"
+      },
+      "aws": {
+        "extra_arguments": "--tags '{{user `tags`}}'"
+      }
+    }
+  }, {
+    "type": "shell",
+
+    "only": ["virtualbox"],
+
+    "inline": [
+      "dd if=/dev/zero of=/EMPTY bs=1M",
+      "rm -f /EMPTY"
+    ],
+
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+  }, {
+    "type": "shell",
+    "inline": [
+      "rm -rf /var/lib/yum/history/* /tmp/* /var/tmp/*"
+    ],
+    "override": {
+      "virtualbox": {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'"
+      },
+      "aws": {
+        "execute_command": "{{.Vars}} sudo -S -E bash '{{.Path}}'"
+      }
+    }
+  }],
+
+  "post-processors": [
+    [{
+      "type": "vagrant",
+
+      "only": ["virtualbox"],
+
+      "output": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `image_name`}}/{{user `image_name`}}.box",
+      "compression_level": 9,
+      "keep_input_artifact": true
+    }, {
+      "type": "atlas",
+
+      "only": ["virtualbox"],
+
+      "token": "{{user `atlas_token`}}",
+      "artifact": "{{user `atlas_user`}}/{{user `image_name`}}",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+        "created_at": "{{timestamp}}",
+        "provider": "virtualbox",
+        "version": "{{user `version`}}.{{user `timestamp`}}"
+      }
+    }], [{
+      "type": "docker-tag",
+
+      "only": ["docker"],
+
+      "repository": "{{user `docker_user`}}/{{user `image_name`}}",
+      "tag": "{{user `version`}}.{{user `timestamp`}}"
+    },{
+      "type": "docker-tag",
+
+      "only": ["docker"],
+
+      "repository": "{{user `docker_user`}}/{{user `image_name`}}",
+      "tag": "{{user `version`}}",
+      "force": true
+    },{
+      "type": "docker-tag",
+
+      "only": ["docker"],
+
+      "repository": "{{user `docker_user`}}/{{user `image_name`}}",
+      "tag": "latest",
+      "force": true
+    },{
+      "type": "docker-push",
+
+      "only": ["docker"]
+    }]
+  ]
+}

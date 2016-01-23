@@ -1,0 +1,12 @@
+---
+#
+
+- debug:
+    var: ansible_os_family
+
+- include: install-oracle-java-debian.yml
+  when: ansible_os_family == "Debian"
+
+
+- include: install-oracle-java-redhat.yml
+  when: ansible_os_family == "RedHat"

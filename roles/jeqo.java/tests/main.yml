@@ -1,0 +1,79 @@
+- name: test install openjdk jdk 8 on centos 7
+  hosts: test01
+  roles:
+    - role: java
+      java_provider: openjdk
+      java_version: 8
+      java_type: jdk
+
+- name: test install openjdk jre 8 on centos 7
+  hosts: test02
+  roles:
+    - role: java
+      java_provider: openjdk
+      java_version: 8
+      java_type: jre
+
+- name: test install openjdk jdk 7 on centos 7
+  hosts: test03
+  roles:
+    - role: java
+      java_provider: openjdk
+      java_version: 7
+      java_type: jdk
+
+- name: test install openjdk jre 7 on centos 7
+  hosts: test04
+  roles:
+    - role: java
+      java_provider: openjdk
+      java_version: 7
+      java_type: jre
+
+- name: test install oracle java jdk 8 on centos 7
+  hosts: test05
+  roles:
+    - role: java
+      java_provider: oracle
+      java_version: 8
+      java_type: jdk
+
+- name: test install oracle java jre 8 on centos 7
+  hosts: test06
+  roles:
+    - role: java
+      java_provider: oracle
+      java_version: 8
+      java_type: jre
+
+- name: test install oracle java jdk 7 on centos 7
+  hosts: test07
+  roles:
+    - role: java
+      java_provider: oracle
+      java_version: 7
+      java_type: jdk
+
+- name: test install oracle java jre 7 on centos 7
+  hosts: test08
+  roles:
+    - role: java
+      java_provider: oracle
+      java_version: 7
+      java_type: jre
+
+- name: test install azul zulu 8 on centos 7
+  hosts: test09
+  roles:
+    - role: java
+      java_provider: azul
+      java_version: 8
+      java_type: jre
+
+- name: test install azul zulu jdk 7 on centos 7
+  hosts: test10
+  roles:
+    - role: java
+      java_provider: azul
+      java_version: 7
+      java_type: jdk

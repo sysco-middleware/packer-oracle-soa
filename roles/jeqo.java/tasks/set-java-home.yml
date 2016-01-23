@@ -1,0 +1,20 @@
+---
+#
+- set_fact:
+    profile_file: "{{ ansible_env.HOME }}/.profile"
+  when: ansible_os_family == "Debian"
+
+- set_fact:
+    profile_file: "{{ ansible_env.HOME }}/.bash_profile"
+  when: ansible_os_family == "RedHat"
+
+- name: set java home
+  lineinfile:
+   dest: "{{ profile_file }}"
+   regexp: "^{{ item.start }}"
+   line: "{{ item.start }}{{ item.end }}"
+   insertbefore: "export PATH"
+  with_items:
+   - { start: "JAVA_HOME=", end: "{{ java_home }}" }
+   - { start: "PATH=$JAVA_HOME/bin:", end: "$PATH" }
+   - { start: "export JAVA_HOME", end: "" }

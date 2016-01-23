@@ -1,0 +1,11 @@
+---
+- name: oracle soa qs 12c (12.2.1)
+  hosts: 127.0.0.1
+
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.2.1
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: no
+      oracle_soa_installers_12_2_1_1of1: roles/oracle-soa/files/fmw_12.2.1.0.0_soaqs_Disk1_1of1.zip

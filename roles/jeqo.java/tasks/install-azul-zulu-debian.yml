@@ -1,0 +1,13 @@
+---
+#
+- name: import azul key
+  apt_key: keyserver=keyserver.ubuntu.com id=0x219BD9C9
+
+- name: import zulu repo
+  apt_repository: repo='deb http://repos.azulsystems.com/ubuntu stable main' state=present
+
+- name: install zulu
+  apt: name=zulu-{{ java_version }}
+
+- set_fact:
+    java_home: "/usr/lib/jvm/zulu-{{ java_version }}"

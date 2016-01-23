@@ -1,0 +1,3 @@
+# Install a role from the Ansible Galaxy
+- src: https://github.com/jeqo/ansible-oracle-soa
+  name: oracle-soa

@@ -1,0 +1,76 @@
+---
+#
+- name: validate oracle soa 12c release is supported
+  fail: "msg='release is not valid (supported versions: [12.2.1])'"
+  when: oracle_soa_release is defined and oracle_soa_release != '12.2.1'
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_{{ oracle_soa_release }}.0.0_soa.jar"
+    installers:
+      -
+        path: "{{ oracle_soa_installers_12_2_1_1of1 }}"
+        checksum: "{{ oracle_soa_installers_12_2_1_1of1_checksum }}"
+  when: oracle_soa_release == '12.2.1' and not oracle_soa_quick_installation
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_{{ oracle_soa_release }}.0.0_soa_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_soaqs_installers_12_2_1_1of2 }}"
+        checksum: "{{ oracle_soaqs_installers_12_2_1_1of2_checksum }}"
+      -
+        path: "{{ oracle_soaqs_installers_12_2_1_2of2 }}"
+        checksum: "{{ oracle_soaqs_installers_12_2_1_2of2_checksum }}"
+  when: oracle_soa_release == '12.2.1' and oracle_soa_quick_installation and not oracle_soa_install_bpm
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_{{ oracle_soa_release }}.0.0_bpm_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_bpmqs_installers_12_2_1_1of2 }}"
+        checksum: "{{ oracle_bpmqs_installers_12_2_1_1of2_checksum }}"
+      -
+        path: "{{ oracle_bpmqs_installers_12_2_1_2of2 }}"
+        checksum: "{{ oracle_bpmqs_installers_12_2_1_2of2_checksum }}"
+  when: oracle_soa_release == '12.2.1' and oracle_soa_quick_installation and oracle_soa_install_bpm
+
+- include: prepare-soa-installers-12c.yml
+
+- name: create group
+  group: name={{ oracle_soa_os_group }} state=present
+- name: create user
+  user: name={{ oracle_soa_os_user }} group={{ oracle_soa_os_group }} state=present
+
+- name: prepare installation directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+  with_items:
+    - "{{ oracle_soa_oracle_home }}"
+    - "{{ oracle_soa_inventory_directory }}"
+
+- set_fact:
+    oracle_soa_response_file: /tmp/soa-install-12c.rsp
+
+- name: prepare installation response file
+  template:
+    src: soa-install-12c.rsp.j2
+    dest: "{{ oracle_soa_response_file }}"
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+
+- name: prepare oracle inventory parameters
+  template:
+    src: ora_inst.loc.j2
+    dest: "/etc/oraInst.loc"
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+
+- name: install soa
+  shell: "java -jar {{ oracle_soa_jar }} -silent -responseFile {{ oracle_soa_response_file }} >> /tmp/soa-installation.log"
+  args:
+    creates: "{{ oracle_soa_oracle_home }}/oraInst.loc"
+  become: yes
+  become_user: "{{ oracle_soa_os_user }}"
