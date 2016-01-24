@@ -22,7 +22,10 @@
       prompt: "install bpm? (true or false)"
       default: "false"
       private: no
-
+    - name: "download"
+      prompt: "download artifacts? (true or false)"
+      default: "true"
+      private: no
   tasks:
     - set_fact:
         only_providers: -only={{ providers }}
@@ -60,11 +63,13 @@
         msg: "{{ variables }} template will be built"
 
     - shell: "ansible-galaxy install -f -p ./roles -r roles.yml"
+      when: download | bool
 
     - copy:
         src: "{{ item }}"
         dest: roles/oracle-soa/files/
         force: no
       with_items: "{{ installers }}"
+      when: download | bool
 
     - shell: "packer build -var-file={{ variables }} -force=true {{ debug_text }} {{ only_providers }} oracle-soa.json >> build.log"

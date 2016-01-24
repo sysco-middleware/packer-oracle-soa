@@ -18,7 +18,10 @@
 
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `ÀWS_SECRET_KEY`}}",
+
     "aws_source_ami": "",
+    "virtualbox_source_ovf": "",
+    "docker_source_image": "",
 
     "version": "",
     "timestamp": "{{isotime \"20060102150405\"}}",
@@ -32,7 +35,7 @@
 
     "vm_name": "{{user `image_name`}}",
     "output_directory": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `image_name`}}",
-    "source_path": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `base_image_name`}}/{{user `base_image_name`}}.ovf",
+    "source_path": "{{user `virtualbox_source_ovf`}}",
 
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
@@ -51,7 +54,7 @@
   },{
     "type": "docker",
 
-    "image": "{{user `docker_user`}}/{{user `base_image_name`}}",
+    "image": "{{user `docker_source_image`}}",
     "commit": "true"
   },{
     "name": "aws",
@@ -121,7 +124,7 @@
 
       "output": "{{user `user_home`}}/boxes/{{user `atlas_user`}}/{{user `image_name`}}/{{user `image_name`}}.box",
       "compression_level": 9,
-      "keep_input_artifact": true
+      "keep_input_artifact": false
     }, {
       "type": "atlas",
 
