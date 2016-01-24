@@ -8,4 +8,5 @@
       oracle_soa_release: 12.2.1
       oracle_soa_quick_installation: no
       oracle_soa_install_bpm: no
+      
       oracle_soa_installers_12_2_1_1of1: roles/oracle-soa/files/fmw_12.2.1.0.0_soa_Disk1_1of1.zip
