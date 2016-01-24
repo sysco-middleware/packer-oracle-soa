@@ -1,9 +1,0 @@
----
-# vars file for java
-# download.oracle.com/otn/java/jdk/8u66-b17/jdk-8u66-linux-x64.rpm
-java_oracle_8_update: 66
-java_oracle_8_build: 17
-
-# download.oracle.com/otn/java/jdk/7u80-b15/jdk-7u80-linux-x64.rpm
-java_oracle_7_update: 80
-java_oracle_7_build: 15

@@ -1,4 +1,0 @@
-
-# Install a role from the Ansible Galaxy
-- src: jeqo.java
-  name: java
