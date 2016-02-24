@@ -1,0 +1,27 @@
+---
+#
+- name: evaluate oracle soa 12c {{ oracle_soa_release }} installers
+  stat: path="{{ item.path }}"
+  register: zips
+  with_items: "{{ installers }}"
+
+- name: validation zips results
+  debug:
+    var: zips
+
+- name: validate installation zips exist
+  fail: msg="installation zip file {{ item.item.path }} is not present"
+  when: not item.stat.exists or not item.stat.isreg
+  with_items: "{{ zips.results }}"
+
+- name: validate installation zips checksum
+  fail: msg="installation zip file {{ item.item.path }} is not valid"
+  when: item.stat.checksum != item.item.checksum
+  with_items: "{{ zips.results }}"
+
+- name: install the latest version of unzip
+  yum: name=unzip state=latest
+
+- name: "unzip installation files"
+  unarchive: src="{{ item.path }}" dest=/tmp copy=no
+  with_items: "{{ installers }}"

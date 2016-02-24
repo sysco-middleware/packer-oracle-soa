@@ -1,0 +1,19 @@
+---
+#
+- name: install python-software-properties
+  apt: name=python-software-properties state=present
+
+- name: install apt java repository
+  apt_repository: repo='ppa:webupd8team/java'
+
+- name: enable silent install
+  command: "{{ item }}"
+  with_items:
+    - "echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections"
+    - "echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections"
+
+- name: install oracle java jdk
+  apt: name=oracle-java{{ java_version }}-installer update_cache=yes
+
+- set_fact:
+    java_home: "/usr/lib/jvm/java-{{ java_version}}-oracle"

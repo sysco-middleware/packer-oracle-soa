@@ -1,0 +1,55 @@
+---
+#
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.1.3.0.0_soa.jar"
+    installers:
+      -
+        path: "{{ oracle_soa_installers_12_1_3_1of1 }}"
+        checksum: "{{ oracle_soa_installers_12_1_3_1of1_checksum }}"
+  when: oracle_soa_release == '12.1.3' and not oracle_soa_quick_installation
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.1.3.0.0_soa_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_soa_qs_installers_12_1_3_1of1 }}"
+        checksum: "{{ oracle_soa_qs_installers_12_1_3_1of1_checksum }}"
+  when: oracle_soa_release == '12.1.3' and oracle_soa_quick_installation and not oracle_soa_install_bpm
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.1.3.0.0_bpm_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_bpm_qs_installers_12_1_3_1of1 }}"
+        checksum: "{{ oracle_bpm_qs_installers_12_1_3_1of1_checksum }}"
+  when: oracle_soa_release == '12.1.3' and oracle_soa_quick_installation and oracle_soa_install_bpm
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.2.1.0.0_soa.jar"
+    installers:
+      -
+        path: "{{ oracle_soa_installers_12_2_1_1of1 }}"
+        checksum: "{{ oracle_soa_installers_12_2_1_1of1_checksum }}"
+  when: oracle_soa_release == '12.2.1' and not oracle_soa_quick_installation
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.2.1.0.0_soa_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_soa_qs_installers_12_2_1_1of2 }}"
+        checksum: "{{ oracle_soa_qs_installers_12_2_1_1of2_checksum }}"
+      -
+        path: "{{ oracle_soa_qs_installers_12_2_1_2of2 }}"
+        checksum: "{{ oracle_soa_qs_installers_12_2_1_2of2_checksum }}"
+  when: oracle_soa_release == '12.2.1' and oracle_soa_quick_installation and not oracle_soa_install_bpm
+
+- set_fact:
+    oracle_soa_jar: "/tmp/fmw_12.2.1.0.0_bpm_quickstart.jar"
+    installers:
+      -
+        path: "{{ oracle_bpm_qs_installers_12_2_1_1of2 }}"
+        checksum: "{{ oracle_bpm_qs_installers_12_2_1_1of2_checksum }}"
+      -
+        path: "{{ oracle_bpm_qs_installers_12_2_1_2of2 }}"
+        checksum: "{{ oracle_bpm_qs_installers_12_2_1_2of2_checksum }}"
+  when: oracle_soa_release == '12.2.1' and oracle_soa_quick_installation and oracle_soa_install_bpm

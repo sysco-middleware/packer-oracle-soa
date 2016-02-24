@@ -1,0 +1,15 @@
+---
+#
+- name: import azul key
+  rpm_key: state=present key=http://repos.azulsystems.com/RPM-GPG-KEY-azulsystems
+
+- name: import zulu repo
+  get_url:
+    url: http://repos.azulsystems.com/rhel/zulu.repo
+    dest: /etc/yum.repos.d/zulu.repo
+
+- name: install zulu
+  yum: name=zulu-{{ java_version }}
+
+- set_fact:
+    java_home: "/usr/lib/jvm/zulu-{{ java_version }}"

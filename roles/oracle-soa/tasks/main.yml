@@ -1,0 +1,7 @@
+---
+# tasks file for oracle-soa
+- include: install-soa.yml
+  become: yes
+  become_user: root
+  tags:
+    - install

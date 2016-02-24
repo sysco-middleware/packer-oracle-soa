@@ -1,0 +1,18 @@
+---
+#
+- name: validate oracle soa version is supported
+  fail: "msg='version is not valid (supported versions: [12c])'"
+  when: oracle_soa_version is defined and oracle_soa_version != "12c"
+
+- name: validate oracle soa is installed
+  stat: path="{{ oracle_soa_oracle_home }}/soa"
+  register: soa_home
+  become: yes
+  become_user: root
+
+- debug:
+    msg: "oracle soa is already installed in this {{ soa_home }}"
+  when: soa_home.stat.exists
+
+- include: install-soa-12c.yml
+  when: not soa_home.stat.exists and oracle_soa_version == "12c"

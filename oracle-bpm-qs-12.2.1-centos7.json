@@ -1,0 +1,20 @@
+{
+  "name": "oracle-bpm-qs-12c",
+  "os": "centos7",
+
+  "image_name": "oracle-bpm-qs-12c-centos7",
+  "base_image_name": "oracle-jdk-8-centos7",
+
+  "docker_user": "jeqo",
+  "atlas_user": "jeqo",
+
+  "aws_source_ami": "ami-49634723",
+  "virtualbox_source_ovf": "/home/jeqo/.vagrant.d/boxes/jeqo-VAGRANTSLASH-oracle-jdk-8-centos7/8.66.20160116222952/virtualbox/box.ovf",
+  "docker_source_image": "jeqo/oracle-jdk-8-centos7",
+
+  "ansible_playbook": "oracle-bpm-qs-12.2.1.yml",
+
+  "version": "12.2.1",
+
+  "tags": "install"
+}

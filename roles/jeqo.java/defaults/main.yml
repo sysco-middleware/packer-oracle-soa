@@ -1,0 +1,5 @@
+---
+# defaults file for java
+java_provider: openjdk #oracle azul openjdk
+java_version: 8 # 7 8
+java_type: jdk # jdk jre

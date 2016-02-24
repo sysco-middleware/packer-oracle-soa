@@ -1,0 +1,50 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "main.yml"
+    ansible.galaxy_role_file = "roles.yml"
+  end
+
+  config.vm.define "test01" do |test01|
+    test01.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test02" do |test02|
+    test02.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test03" do |test03|
+    test03.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test04" do |test04|
+    test04.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test05" do |test05|
+    test05.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test06" do |test06|
+    test06.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test07" do |test07|
+    test07.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test08" do |test08|
+    test08.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test09" do |test09|
+    test09.vm.box = "jeqo/centos7-ansible"
+  end
+
+  config.vm.define "test10" do |test10|
+    test10.vm.box = "jeqo/centos7-ansible"
+  end
+end

@@ -1,0 +1,66 @@
+- name: test install soa 12c (12.1.3) on centos
+  hosts: test01
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.1.3
+      oracle_soa_quick_installation: no
+      oracle_soa_install_bpm: no
+      oracle_soa_installers_12_1_3_1of1: /srv/files/12.1.3/fmw_12.1.3.0.0_soa_Disk1_1of1.zip
+
+- name: test install soa qs 12c (12.1.3) on centos
+  hosts: test02
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.1.3
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: no
+      oracle_soa_qs_installers_12_1_3_1of1: /srv/files/12.1.3/fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip
+    - role: oracle-wlst
+      oracle_wlst_oracle_home: "{{ oracle_soa_oracle_home }}"
+      oracle_wlst_execute: yes
+      oracle_wlst_execute_file: yes
+      oracle_wlst_execute_file_path: /vagrant/roles/osb-domain.py
+
+- name: test install bpm qs 12c (12.1.3) on centos
+  hosts: test03
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.1.3
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: yes
+      oracle_bpm_qs_installers_12_1_3_1of1: /srv/files/12.1.3/fmw_12.1.3.0.0_bpmqs_Disk1_1of1.zip
+
+- name: test install soa 12c (12.2.1) on centos
+  hosts: test04
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.2.1
+      oracle_soa_quick_installation: no
+      oracle_soa_install_bpm: no
+      oracle_soa_installers_12_2_1_1of1: /srv/files/12.2.1/fmw_12.2.1.0.0_soa_Disk1_1of1.zip
+
+- name: test install soa qs 12c (12.2.1) on centos
+  hosts: test05
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.2.1
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: no
+      oracle_soa_qs_installers_12_2_1_1of2: /srv/files/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip
+      oracle_soa_qs_installers_12_2_1_2of2: /srv/files/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip
+
+- name: test install bpm qs 12c (12.2.1) on centos
+  hosts: test06
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.2.1
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: yes
+      oracle_bpm_qs_installers_12_2_1_1of2: /srv/files/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip
+      oracle_bpm_qs_installers_12_2_1_2of2: /srv/files/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip

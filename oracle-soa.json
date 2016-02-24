@@ -23,6 +23,8 @@
     "virtualbox_source_ovf": "",
     "docker_source_image": "",
 
+    "ansible_playbook": "",
+
     "version": "",
     "timestamp": "{{isotime \"20060102150405\"}}",
 
@@ -74,7 +76,7 @@
 
   "provisioners": [{
     "type": "ansible-local",
-    "playbook_file": "{{user `name`}}.yml",
+    "playbook_file": "{{user `ansible_playbook`}}",
     "role_paths": [
       "{{template_dir}}/roles/oracle-soa",
       "{{template_dir}}/roles/jeqo.java"

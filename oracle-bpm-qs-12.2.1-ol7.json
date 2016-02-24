@@ -11,6 +11,8 @@
   "virtualbox_source_ovf": "/home/jeqo/.vagrant.d/boxes/jeqo-VAGRANTSLASH-oracle-jdk-8-ol7/8.66.20160116222952/virtualbox/box.ovf",
   "docker_source_image": "jeqo/oracle-jdk-8-ol7",
 
+  "ansible_playbook": "oracle-bpm-qs-12.2.1.yml",
+
   "version": "12.2.1",
 
   "tags": "install"

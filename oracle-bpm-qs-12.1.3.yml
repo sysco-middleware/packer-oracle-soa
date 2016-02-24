@@ -1,0 +1,12 @@
+---
+- name: oracle bpm qs 12c (12.1.3)
+  hosts: 127.0.0.1
+
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.1.3
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: yes
+
+      oracle_bpm_qs_installers_12_1_3_1of1: roles/oracle-soa/files/fmw_12.1.3.0.0_bpmqs_Disk1_1of1.zip

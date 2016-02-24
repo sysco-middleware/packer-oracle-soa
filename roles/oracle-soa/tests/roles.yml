@@ -1,0 +1,6 @@
+# Install a role from the Ansible Galaxy
+- src: https://github.com/jeqo/ansible-role-oracle-soa
+  name: oracle-soa
+
+- src: https://github.com/jeqo/ansible-role-oracle-wlst
+  name: oracle-wlst

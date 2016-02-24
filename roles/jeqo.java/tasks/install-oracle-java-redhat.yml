@@ -1,0 +1,50 @@
+---
+#
+- debug:
+    var: java_version
+
+- set_fact:
+    java_update: "{{ java_oracle_7_update }}"
+    java_build: "{{ java_oracle_7_build }}"
+  when: java_version == 7
+
+- set_fact:
+    java_update: "{{ java_oracle_8_update }}"
+    java_build: "{{ java_oracle_8_build }}"
+  when: java_version == 8
+
+- set_fact:
+    java_home: "/usr/java/jdk1.{{ java_version }}.0_{{ java_update }}"
+    java_rpm: "/tmp/jdk-{{ java_version }}.rpm"
+
+- debug:
+    var: java_update
+- debug:
+    var: java_build
+- debug:
+    var: java_home
+- debug:
+    var: java_rpm
+
+- stat: "path={{ java_home }}/bin/java"
+  register: java_file
+
+- debug:
+    var: java_file
+
+- stat: "path={{ java_rpm }}"
+  register: rpm_file
+
+- debug:
+    var: rpm_file
+
+- name: download oracle java rpm
+  get_url:
+    url: "http://download.oracle.com/otn-pub/java/jdk/{{ java_version }}u{{ java_update }}-b{{ java_build }}/{{ java_type }}-{{ java_version }}u{{ java_update }}-linux-x64.rpm"
+    dest: "/tmp/jdk-{{ java_version }}.rpm"
+    headers: "Cookie:oraclelicense=accept-securebackup-cookie"
+  when: java_file.stat.exists == false and rpm_file.stat.exists == false
+
+- name: install oracle java jdk
+  yum: name={{ java_rpm }} state=present
+  when: java_file.stat.exists == false

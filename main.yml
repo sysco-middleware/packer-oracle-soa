@@ -14,6 +14,10 @@
       prompt: "os? (ol7 or centos7)"
       default: "centos7"
       private: no
+    - name: "release"
+      prompt: "release? (12.1.3 or 12.2.1)"
+      default: "12.1.3"
+      private: no
     - name: "quick"
       prompt: "quick installer? (true or false)"
       default: "true"
@@ -40,24 +44,30 @@
       when: not debug | bool
 
     - set_fact:
-        variables: oracle-soa-12c-{{ os }}.json
+        variables: oracle-soa-qs-12.1.3-{{ os }}.json
         installers:
-          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soa_Disk1_1of1.zip"
-      when: not quick
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.1.3/fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip"
+      when: quick | bool and not bpm | bool and release == "12.1.3"
 
     - set_fact:
-        variables: oracle-soa-qs-12c-{{ os }}.json
+        variables: oracle-bpm-qs-12.1.3-{{ os }}.json
+        installers:
+          - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.1.3/fmw_12.1.3.0.0_bpmqs_Disk1_1of1.zip"
+      when: quick | bool and bpm | bool and release == "12.1.3"
+
+    - set_fact:
+        variables: oracle-soa-qs-12.2.1-{{ os }}.json
         installers:
           - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip"
           - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip"
-      when: quick | bool and not bpm | bool
+      when: quick | bool and not bpm | bool and release == "12.2.1"
 
     - set_fact:
-        variables: oracle-bpm-qs-12c-{{ os }}.json
+        variables: oracle-bpm-qs-12.2.1-{{ os }}.json
         installers:
           - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip"
           - "{{ ansible_env.HOME }}/oracle/fmw/installers/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip"
-      when: quick | bool and bpm | bool
+      when: quick | bool and bpm | bool and release == "12.2.1"
 
     - debug:
         msg: "{{ variables }} template will be built"

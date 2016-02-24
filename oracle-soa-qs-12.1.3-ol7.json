@@ -8,7 +8,9 @@
   "docker_user": "jeqo",
   "atlas_user": "jeqo",
 
-  "version": "12.2.1",
+  "ansible_playbook": "oracle-soa-qs-12.1.3.yml",
+
+  "version": "12.1.3",
 
   "tags": "install"
 }

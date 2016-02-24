@@ -1,7 +1,7 @@
-Oracle WebLogic Provisioning
+Oracle SOA Provisioning
 ============================
 
-Oracle WebLogic Provisioning repository based on the following tools:
+Oracle SOA Provisioning repository based on the following tools:
 
 - [Packer](https://packer.io/): Machine/Container image builder
 
@@ -29,11 +29,11 @@ VirtualBox provider.
 Versions
 --------
 
-- **oracle-weblogic-12c**
+- **oracle-soa-12c**
 
-  - Atlas: [https://atlas.hashicorp.com/jeqo/boxes/oracle-weblogic-12c](https://atlas.hashicorp.com/jeqo/boxes/oracle-weblogic-12c)
+  - Atlas: [https://atlas.hashicorp.com/jeqo/boxes/oracle-soa-12c](https://atlas.hashicorp.com/jeqo/boxes/oracle-soa-12c)
 
-  - Docker Hub: [https://hub.docker.com/r/jeqo/oracle-weblogic-12c/](https://hub.docker.com/r/jeqo/oracle-weblogic-12c/)
+  - Docker Hub: [https://hub.docker.com/r/jeqo/oracle-soa-12c/](https://hub.docker.com/r/jeqo/oracle-soa-12c/)
 
 Directory Structure
 -------------------

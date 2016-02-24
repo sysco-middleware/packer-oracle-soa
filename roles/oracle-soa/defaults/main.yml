@@ -1,0 +1,30 @@
+---
+# defaults file for oracle-soa
+oracle_soa_version: 12c
+oracle_soa_release: 12.2.1 # 12.2.1 12.1.3
+oracle_soa_quick_installation: yes
+oracle_soa_install_bpm: yes
+
+# 12.1.3
+oracle_soa_installers_12_1_3_1of1: files/fmw_12.1.3.0.0_soa_Disk1_1of2.zip
+oracle_soa_installers_12_1_3_1of1_checksum: 81b3cb740e15f3bd3349afb0b87aa692465e142e
+
+oracle_soa_qs_installers_12_1_3_1of1: files/fmw_12.1.3.0.0_soaqs_Disk1_1of2.zip
+oracle_soa_qs_installers_12_1_3_1of1_checksum: 9a3dca06d05448f325da1a6fd344b90f06a67907
+
+oracle_bpm_qs_installers_12_1_3_1of1: files/fmw_12.1.3.0.0_bpmqs_Disk1_1of2.zip
+oracle_bpm_qs_installers_12_1_3_1of1_checksum: 32fafb1eb4f696f3d8d1da932c969a44ae0eacf2
+
+# 12.2.1
+oracle_soa_installers_12_2_1_1of1: files/fmw_12.2.1.0.0_soa_Disk1_1of2.zip
+oracle_soa_installers_12_2_1_1of1_checksum: 81b3cb740e15f3bd3349afb0b87aa692465e142e
+
+oracle_soa_qs_installers_12_2_1_1of2: files/fmw_12.2.1.0.0_soaqs_Disk1_1of2.zip
+oracle_soa_qs_installers_12_2_1_1of2_checksum: 1b72e95a475fc23df87da491c7585a5c4e2d29d0
+oracle_soa_qs_installers_12_2_1_2of2: files/fmw_12.2.1.0.0_soaqs_Disk1_2of2.zip
+oracle_soa_qs_installers_12_2_1_2of2_checksum: e0108032e3897f06b22758baa7e8115beb85022f
+
+oracle_bpm_qs_installers_12_2_1_1of2: files/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip
+oracle_bpm_qs_installers_12_2_1_1of2_checksum: 5cf764989004ac9a9fb8098959dd26cb9424caf7
+oracle_bpm_qs_installers_12_2_1_2of2: files/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip
+oracle_bpm_qs_installers_12_2_1_2of2_checksum: 8725e9fafdf0fea57d1abfb0af85cb0406041dde

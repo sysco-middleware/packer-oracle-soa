@@ -1,0 +1,48 @@
+---
+#
+- name: validate oracle soa 12c release is supported
+  fail: "msg='release is not valid (supported versions: [{{ oracle_soa_12c_releases }}])'"
+  when: oracle_soa_release not in oracle_soa_12c_releases
+
+- include: define-soa-installers-12c.yml
+
+- include: prepare-soa-installers-12c.yml
+
+- name: create group
+  group: name={{ oracle_soa_os_group }} state=present
+- name: create user
+  user: name={{ oracle_soa_os_user }} group={{ oracle_soa_os_group }} state=present
+
+- name: prepare installation directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+  with_items:
+    - "{{ oracle_soa_oracle_home }}"
+    - "{{ oracle_soa_inventory_directory }}"
+
+- set_fact:
+    oracle_soa_response_file: /tmp/soa-install-12c.rsp
+
+- name: prepare installation response file
+  template:
+    src: soa-install-12c.rsp.j2
+    dest: "{{ oracle_soa_response_file }}"
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+
+- name: prepare oracle inventory parameters
+  template:
+    src: ora_inst.loc.j2
+    dest: "/etc/oraInst.loc"
+    owner: "{{ oracle_soa_os_user }}"
+    group: "{{ oracle_soa_os_group }}"
+
+- name: install soa
+  shell: "java -jar {{ oracle_soa_jar }} -silent -responseFile {{ oracle_soa_response_file }} >> /tmp/soa-installation.log"
+  args:
+    creates: "{{ oracle_soa_oracle_home }}/oraInst.loc"
+  become: yes
+  become_user: "{{ oracle_soa_os_user }}"
