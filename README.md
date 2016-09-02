@@ -44,14 +44,9 @@ Before Run
 ----------
 
 Install Ansible Roles
-```bash
-./install_ansible_roles.sh
-```
-
-or
 
 ```bash
-ansible-galaxy install -f -p ./roles -r ansible_roles.yml
+ansible-galaxy install -f -p ./roles -r roles.yml
 ```
 
 **IMPORTANT**: Download required installers, depending on your version and releases:

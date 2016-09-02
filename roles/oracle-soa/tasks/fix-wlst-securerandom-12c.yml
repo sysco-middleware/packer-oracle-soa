@@ -1,0 +1,6 @@
+---
+#
+- lineinfile:
+    dest: "{{ oracle_soa_oracle_home }}/oracle_common/common/bin/wlst.sh"
+    regexp: ^JVM_ARGS=
+    line: JVM_ARGS="-Dprod.props.file='${WL_HOME}'/.product.properties ${WLST_PROPERTIES} ${JVM_D64} ${UTILS_MEM_ARGS} ${COMMON_JVM_ARGS} ${CONFIG_JVM_ARGS} -Djava.security.egd=file:///dev/urandom"

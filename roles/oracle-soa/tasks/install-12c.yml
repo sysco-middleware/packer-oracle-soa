@@ -1,0 +1,11 @@
+---
+#
+- name: prepare installation response file
+  template:
+    src: install-soa-12c.rsp.j2
+    dest: "{{ oracle_soa_response_file }}"
+
+- name: install soa
+  shell: "java -jar {{ oracle_soa_installer }} -silent -responseFile {{ oracle_soa_response_file }} >> /tmp/soa-installation.log"
+  args:
+    creates: "{{ oracle_soa_soa_home }}"

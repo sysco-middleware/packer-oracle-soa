@@ -1,3 +1,17 @@
+- name: test install local
+  hosts: localhost
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 12c
+      oracle_soa_release: 12.1.3
+      oracle_soa_quick_installation: yes
+      oracle_soa_install_bpm: no
+      oracle_soa_qs_installers_12_1_3_1of1: /home/jeqo/oracle/fmw/installers/12.1.3/fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip
+      oracle_soa_oracle_home: /home/jeqo/oracle/fmw/12.1.3/sysco-soa-qs
+      oracle_soa_os_user: jeqo
+      oracle_soa_os_group: jeqo
+      oracle_soa_jdev_command: jdev-sysco
+
 - name: test install soa 12c (12.1.3) on centos
   hosts: test01
   roles:
@@ -17,11 +31,6 @@
       oracle_soa_quick_installation: yes
       oracle_soa_install_bpm: no
       oracle_soa_qs_installers_12_1_3_1of1: /srv/files/12.1.3/fmw_12.1.3.0.0_soaqs_Disk1_1of1.zip
-    - role: oracle-wlst
-      oracle_wlst_oracle_home: "{{ oracle_soa_oracle_home }}"
-      oracle_wlst_execute: yes
-      oracle_wlst_execute_file: yes
-      oracle_wlst_execute_file_path: /vagrant/roles/osb-domain.py
 
 - name: test install bpm qs 12c (12.1.3) on centos
   hosts: test03
@@ -64,3 +73,12 @@
       oracle_soa_install_bpm: yes
       oracle_bpm_qs_installers_12_2_1_1of2: /srv/files/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_1of2.zip
       oracle_bpm_qs_installers_12_2_1_2of2: /srv/files/12.2.1/fmw_12.2.1.0.0_bpmqs_Disk1_2of2.zip
+
+- name: test install soa 11g (11.1.1.7) on centos
+  hosts: test07
+  roles:
+    - role: oracle-soa
+      oracle_soa_version: 11g
+      oracle_soa_release: 11.1.1.7
+      oracle_soa_is_quickstart: false
+      oracle_soa_installer: /srv/files/11.1.1/ofm_soa_generic_11.1.1.7.0/Disk1/runInstaller

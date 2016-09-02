@@ -1,0 +1,7 @@
+---
+#
+- name: create link to jdev
+  template:
+    src: jdev-command.j2
+    dest: "/usr/bin/{{ oracle_soa_jdev_command }}"
+    mode: "u=rwx,g=rx,o=rx"

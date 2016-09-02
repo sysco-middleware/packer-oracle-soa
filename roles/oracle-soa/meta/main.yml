@@ -1,7 +1,7 @@
 galaxy_info:
-  author: jeqo (quilcate.jorge@gmail.com)
-  description: install and configure oracle soa suite
-  company: sysco as
+  author: Jorge Quilcate
+  description: Install and configure Oracle SOA Suite
+  company: Sysco AS
   license: MIT
 
   min_ansible_version: 2.0
@@ -17,7 +17,6 @@ galaxy_info:
   - web
 
   galaxy_tags:
-  - install
   - middleware
   - soa
   - oracle

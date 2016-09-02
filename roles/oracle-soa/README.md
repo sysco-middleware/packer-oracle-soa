@@ -1,38 +1,58 @@
-Role Name
-=========
+Ansible Role: Oracle SOA Suite
+==============================
 
-A brief description of the role goes here.
+Role aimed to install and configure Oracle SOA Suite. Currently it supports
+12c releases (12.1.3, 12.2.1) and 11g releases (11.1.1.7)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Java Development Kit installed, depending in SOA Suite version (e.g: Oracle JDK 8 on SOA 12.2.1)
+- This role is only supported in Red Hat related OS (Centos, Oracle Linux).
+- If you are not using _oracle_soa_quick_installation_ = yes, then you need to have Oracle WebLogic installed (you can use [oracle-weblogic](https://galaxy.ansible.com/sysco-middleware/oracle-weblogic/) role).
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Defaults:
+
+- _oracle_soa_version_: 12c
+- _oracle_soa_quick_installation_: yes #only required in 12c
+- _oracle_soa_installer_: path.jar # path to soa installer
+
+Variables:
+
+- _oracle_soa_user_: oraclefmw
+- _oracle_soa_group_: ofmwinstall
+- _oracle_soa_user_home_: "/opt/oraclefmw"
+- _oracle_soa_oracle_home_: "/opt/oraclefmw/product/oracle_home"
+- _oracle_soa_soa_home_: "{{ oracle_soa_oracle_home }}/soa"
+- _oracle_soa_wls_home_: "{{ oracle_soa_oracle_home }}/wlserver"
+- _oracle_soa_inventory_file_: "{{ oracle_soa_user_home }}/oraInst.loc"
+- _oracle_soa_inventory_directory_: "/opt/oraclefmw/inventory"
+- _oracle_soa_jdev_command_: jdev
+
+- _oracle_soa_response_file_: "{{ oracle_soa_user_home }}/soa-install.rsp"
+
+- _oracle_soa_already_installed_: false
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Refer to tests/test.yml
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Jorge Quilcate (jorge.quilcate@sysco.no)

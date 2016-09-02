@@ -1,16 +1,16 @@
 ---
 # vars file for oracle-soa
 
-oracle_soa_os_user: oraclefmw
-oracle_soa_os_group: ofmwinstall
-oracle_soa_os_user_home: "/home/{{ oracle_soa_os_user }}"
-oracle_soa_oracle_home: "{{ oracle_soa_os_user_home }}/product/oracle_home"
-oracle_soa_inventory_file: "{{ oracle_soa_os_user_home }}/oraInst.loc"
-oracle_soa_inventory_directory: "{{ oracle_soa_os_user_home }}/ora_inventory"
+oracle_soa_user: oraclefmw
+oracle_soa_group: ofmwinstall
+oracle_soa_oracle_base: "/opt/oraclefmw"
+oracle_soa_oracle_home: "/opt/oraclefmw/product/oracle_home"
+oracle_soa_soa_home: "{{ oracle_soa_oracle_home }}/soa"
+oracle_soa_wls_home: "{{ oracle_soa_oracle_home }}/wlserver"
+oracle_soa_inventory_file: "{{ oracle_soa_oracle_base }}/oraInst.loc"
+oracle_soa_inventory_directory: "/opt/oraclefmw/inventory"
+oracle_soa_jdev_command: jdev
 
-oracle_soa_domains_home: "{{ oracle_soa_os_user_home }}/config/domains"
-oracle_soa_applications_home: "{{ oracle_soa_os_user_home }}config/applications"
+oracle_soa_response_file: "{{ oracle_soa_oracle_base }}/soa-install.rsp"
 
-oracle_soa_12c_releases:
-  - 12.1.3
-  - 12.2.1
+oracle_soa_already_installed: false
