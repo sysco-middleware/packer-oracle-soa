@@ -35,10 +35,10 @@ Versions
 
   - Docker Hub: [https://hub.docker.com/r/jeqo/oracle-soa-12c/](https://hub.docker.com/r/jeqo/oracle-soa-12c/)
 
-Directory Structure
+ Directory Structure
 -------------------
 
-- samples: Usage samples.
+- roles: Required Ansible roles.
 
 Before Run
 ----------
